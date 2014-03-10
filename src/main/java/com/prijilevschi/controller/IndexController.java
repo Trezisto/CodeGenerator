@@ -19,4 +19,5 @@ public class IndexController {
     public String getPage(Model model) {
         return "index";
     }
+
 }
