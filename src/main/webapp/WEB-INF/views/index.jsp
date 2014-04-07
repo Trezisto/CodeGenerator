@@ -7,11 +7,57 @@
     <title>Code Generator | Main Page</title>
 	<link rel="stylesheet" type="text/css" href="<c:url value="css/style.css" />" />
 	<script type="text/javascript" src="<c:url value="js/fsm.js" />"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://malsup.github.com/jquery.form.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	 <script>
+		//using jquery.form.js
+		 function uploadJqueryForm(){
+		     $('#result').html('');
+		  
+		    $("#form2").ajaxForm({
+		     success:function(data) {
+		           $('#result').html(data);
+		      },
+		      dataType:"text"
+		    }).submit();
+		 }
+	 
+		$(function() {
+			var availableTags = [
+				"C++",
+				"Java",
+				"JavaScript"
+			];
+			$( "#lang" ).autocomplete({
+				source: availableTags
+			});
+		});
+	</script>
 </head>
 <body>
 	<div id="head"><h1>Code Generator</h1></div>
 	
 	<div id="menu">
+		<form id="form2" method="post" action="/index/upload" enctype="multipart/form-data">
+		  <!-- File input -->    
+		  <input name="file2" id="file2" type="file" /><br/>
+		</form>
+		<button value="Upload" onclick="uploadJqueryForm()" >Upload XML file</button>
+		<button value="Export" onclick="exportXML()" >Export to XML</button>
+		
+		<div id="result"></div>
+		
+		<div class="line"></div>
+		
+		<div class="ui-widget">
+			<label for="lang">Language: </label>
+			<input id="lang">
+		</div>
+		<button value="Submit" onclick="submit()">Submit</button>
+		<button value="Reset" onclick="reset()">Reset</button>
+		
 		<div><a href="1.html">Home</a></div>
 		<div><a href="2.html">My page</a></div>
 		<div><a href="3.html">Preferences</a></div>
