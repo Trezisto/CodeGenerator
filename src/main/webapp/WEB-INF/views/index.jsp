@@ -58,6 +58,8 @@
 		<button value="Submit" onclick="submit()">Submit</button>
 		<button value="Reset" onclick="reset()">Reset</button>
 		
+		<div id="status"></div>
+		
 		<div><a href="1.html">Home</a></div>
 		<div><a href="2.html">My page</a></div>
 		<div><a href="3.html">Preferences</a></div>

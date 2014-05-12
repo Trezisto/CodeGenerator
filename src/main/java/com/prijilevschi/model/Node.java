@@ -7,6 +7,15 @@ package com.prijilevschi.model;
  */
 public class Node {
 	private String name;
+	private boolean finish;
+
+	public boolean isFinish() {
+		return finish;
+	}
+
+	public void setFinish(boolean finish) {
+		this.finish = finish;
+	}
 
 	public String getName() {
 		return name;

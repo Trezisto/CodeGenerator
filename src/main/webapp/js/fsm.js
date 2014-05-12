@@ -1,31 +1,3 @@
-/*
- Finite State Machine Designer (http://madebyevan.com/fsm/)
- License: MIT License (see below)
-
- Copyright (c) 2010 Evan Wallace
-
- Permission is hereby granted, free of charge, to any person
- obtaining a copy of this software and associated documentation
- files (the "Software"), to deal in the Software without
- restriction, including without limitation the rights to use,
- copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the
- Software is furnished to do so, subject to the following
- conditions:
-
- The above copyright notice and this permission notice shall be
- included in all copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- OTHER DEALINGS IN THE SOFTWARE.
-*/
-
 function Link(a, b) {
   this.nodeA = a;
   this.nodeB = b;
@@ -1089,8 +1061,65 @@ function saveBackup() {
   localStorage['fsm'] = JSON.stringify(backup);
 }
 
+//Write data in JSON format and pass them to Java Controller
+function submit(){
+	
+	var dynamicModel = {
+		language : '',
+		states : '',
+		links : ''
+	};
+	
+	alert($('#lang').val);
+	dynamicModel.language = $('#lang').val;
+	dynamicModel.states = '[';
+	dynamicModel.links = '[';
+	var i;
+	for(i = 0; i < nodes.length; i++){
+		dynamicModel.states += '{text : ' + nodes[i].text + ', finish : ' + nodes[i].isAcceptState + '}, ';
+	}
+	
+	for(i = 0; i < links.length; i++){
+		if(typeof links[i].node === 'undefined'){
+			//alert(links[i].text + '\n' + links[i].nodeA.text + '\n' + links[i].nodeB.text);
+			dynamicModel.links += '{text : ' + links[i].text + ', from : ' + links[i].nodeA.text + ', to : ' + links[i].nodeB.text + '}, ';
+		}
+		else{
+			//alert(links[i].text + '\n' + links[i].node.text + '\n' + links[i].node.text);
+			dynamicModel.links += '{text : ' + links[i].text + ', from : ' + links[i].node.text + ', to : ' + links[i].node.text + '}, ';
+		}
+			
+	}
+	
+	dynamicModel.states = dynamicModel.states.substring(0, dynamicModel.states.length - 2) + ']';
+	dynamicModel.links = dynamicModel.links.substring(0, dynamicModel.links.length - 2) + ']';
+	
+	alert(JSON.stringify(dynamicModel));
+	alert(dynamicModel.states);
+	alert(dynamicModel.links);
+	
+	$.ajax({
+		type: 'POST',
+		url: 'http://localhost:8080/index/send',
+		data: JSON.stringify(dynamicModel),
+		contentType: 'application/json',
+		datatype: 'json',
+		success: function(data) {
+			if(data.status == 'OK')
+				alert('yay');
+			else
+				alert('well, BUT...');
+		},
+		error:function(data,status,er) {
+			alert('ditch');
+		}		
+	});
+	
+}
+
+
 $("button").click(function(){
-	alert('lol');
+	
 	$.ajax({
 		url: "demo_test.txt",
 		success:function(result){

@@ -26,7 +26,7 @@ public class GeneratorServiceImpl implements GeneratorService{
 		try {
 			language.generateState(links);
 			for(Node node : nodes){
-				language.generateConcreteState(node);
+				language.generateConcreteState(node, links);
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

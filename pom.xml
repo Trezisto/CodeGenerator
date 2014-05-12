@@ -75,6 +75,14 @@
 		<version>2.4</version>
 	</dependency>
     
+   <!-- Data Mapper package is a high-performance data binding package built on Jackson JSON processor -->
+   <dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-mapper-asl</artifactId>
+		<version>1.9.12</version>
+	</dependency>
+            
+            
   </dependencies>
   
   <build>

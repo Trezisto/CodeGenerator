@@ -6,16 +6,19 @@ import java.util.Iterator;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.prijilevschi.model.DynamicModel;
 import com.prijilevschi.model.UploadedFile;
 
 /**
@@ -28,9 +31,11 @@ import com.prijilevschi.model.UploadedFile;
 @RequestMapping("/index")
 public class IndexController {
 
+	private static final Logger logger = Logger.getLogger(IndexController.class);
+			
 	UploadedFile ufile;
 	public IndexController(){
-		System.out.println("init RestController");
+		logger.info("init RestController");
 		ufile = new UploadedFile();
 	}
 	
@@ -82,5 +87,17 @@ public class IndexController {
       return "<img src='http://localhost:8080/index/get/"+Calendar.getInstance().getTimeInMillis()+"' />";
   
    }
+    /*
+     * http://gerrydevstory.com/2013/08/14/posting-json-to-spring-mvc-controller/
+     * http://www.captaindebug.com/2013/05/spring-mvc-ajax-and-json-part-2-server.html#.U26HJaKv-ex
+     * http://spring.io/blog/2010/01/25/ajax-simplifications-in-spring-3-0/
+     */
+    @RequestMapping(value = "/send", 
+    		method = RequestMethod.POST,
+    		headers = {"Content-type=application/json"})
+    public @ResponseBody String send(@RequestBody DynamicModel dm){
+    	System.out.println("priem");
+    	return "index";
+    }
 
 }
