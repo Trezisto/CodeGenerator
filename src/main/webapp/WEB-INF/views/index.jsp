@@ -9,7 +9,7 @@
 	<script type="text/javascript" src="<c:url value="js/fsm.js" />"></script>
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="http://malsup.github.com/jquery.form.js"></script>
+	<script type="text/javascript" src="<c:url value="js/jquery.form.min.js" />"></script>
 	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	 <script>
 		//using jquery.form.js

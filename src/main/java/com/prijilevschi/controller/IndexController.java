@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.prijilevschi.model.DynamicModel;
+import com.prijilevschi.model.JsonResponse;
 import com.prijilevschi.model.UploadedFile;
 
 /**
@@ -30,7 +32,7 @@ import com.prijilevschi.model.UploadedFile;
 @Controller
 @RequestMapping("/index")
 public class IndexController {
-
+	
 	private static final Logger logger = Logger.getLogger(IndexController.class);
 			
 	UploadedFile ufile;
@@ -88,16 +90,16 @@ public class IndexController {
   
    }
     /*
-     * http://gerrydevstory.com/2013/08/14/posting-json-to-spring-mvc-controller/
-     * http://www.captaindebug.com/2013/05/spring-mvc-ajax-and-json-part-2-server.html#.U26HJaKv-ex
-     * http://spring.io/blog/2010/01/25/ajax-simplifications-in-spring-3-0/
+     * http://wiki.fasterxml.com/JacksonInFiveMinutes
+     * http://www.technicalkeeda.com/jquery/spring-framework-jquery-ajax-request-and-json-response-example
+     * http://www.journaldev.com/2324/jackson-json-processing-api-in-java-example-tutorial
      */
     @RequestMapping(value = "/send", 
     		method = RequestMethod.POST,
-    		headers = {"Content-type=application/json"})
+    		produces = "application/json")
     public @ResponseBody String send(@RequestBody DynamicModel dm){
     	System.out.println("priem");
-    	return "index";
+    	return "index";    	
     }
 
 }

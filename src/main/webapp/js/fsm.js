@@ -1066,44 +1066,50 @@ function submit(){
 	
 	var dynamicModel = {
 		language : '',
-		states : '',
-		links : ''
+		states : [],
+		links : []
 	};
 	
-	alert($('#lang').val);
-	dynamicModel.language = $('#lang').val;
-	dynamicModel.states = '[';
-	dynamicModel.links = '[';
+	//alert(JSON.stringify({name:"massiv", len:4,arr:[5,6,7,8]}));
+	dynamicModel.language = $('#lang').val();
 	var i;
 	for(i = 0; i < nodes.length; i++){
-		dynamicModel.states += '{text : ' + nodes[i].text + ', finish : ' + nodes[i].isAcceptState + '}, ';
+		var state = {
+				name : nodes[i].text,
+				finish : nodes[i].isAcceptState
+		};
+		dynamicModel.states.push(state);
 	}
 	
 	for(i = 0; i < links.length; i++){
+		var link = {
+				name : links[i].text,
+				from : '',
+				to : ''
+		};
+		
 		if(typeof links[i].node === 'undefined'){
-			//alert(links[i].text + '\n' + links[i].nodeA.text + '\n' + links[i].nodeB.text);
-			dynamicModel.links += '{text : ' + links[i].text + ', from : ' + links[i].nodeA.text + ', to : ' + links[i].nodeB.text + '}, ';
+			link.from = links[i].nodeA.text;
+			link.to = links[i].nodeB.text;
 		}
 		else{
-			//alert(links[i].text + '\n' + links[i].node.text + '\n' + links[i].node.text);
-			dynamicModel.links += '{text : ' + links[i].text + ', from : ' + links[i].node.text + ', to : ' + links[i].node.text + '}, ';
+			link.from = links[i].node.text;
+			link.to = links[i].node.text;
 		}
-			
+		dynamicModel.links.push(link);	
 	}
 	
-	dynamicModel.states = dynamicModel.states.substring(0, dynamicModel.states.length - 2) + ']';
-	dynamicModel.links = dynamicModel.links.substring(0, dynamicModel.links.length - 2) + ']';
+	//alert(JSON.stringify(dynamicModel));
+	//alert(dynamicModel.states);
+	//alert(dynamicModel.links);
 	
-	alert(JSON.stringify(dynamicModel));
-	alert(dynamicModel.states);
-	alert(dynamicModel.links);
 	
 	$.ajax({
 		type: 'POST',
-		url: 'http://localhost:8080/index/send',
+		url: 'index/send',
 		data: JSON.stringify(dynamicModel),
 		contentType: 'application/json',
-		datatype: 'json',
+		dataType: "text", 
 		success: function(data) {
 			if(data.status == 'OK')
 				alert('yay');
