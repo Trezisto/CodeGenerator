@@ -3,7 +3,6 @@ package com.prijilevschi.controller;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Iterator;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
@@ -14,13 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.prijilevschi.model.DynamicModel;
-import com.prijilevschi.model.JsonResponse;
 import com.prijilevschi.model.UploadedFile;
 
 /**
@@ -37,7 +34,7 @@ public class IndexController {
 			
 	UploadedFile ufile;
 	public IndexController(){
-		logger.info("init RestController");
+		logger.info("init IndexController");
 		ufile = new UploadedFile();
 	}
 	
@@ -89,17 +86,13 @@ public class IndexController {
       return "<img src='http://localhost:8080/index/get/"+Calendar.getInstance().getTimeInMillis()+"' />";
   
    }
-    /*
-     * http://wiki.fasterxml.com/JacksonInFiveMinutes
-     * http://www.technicalkeeda.com/jquery/spring-framework-jquery-ajax-request-and-json-response-example
-     * http://www.journaldev.com/2324/jackson-json-processing-api-in-java-example-tutorial
-     */
+    
     @RequestMapping(value = "/send", 
-    		method = RequestMethod.POST,
-    		produces = "application/json")
-    public @ResponseBody String send(@RequestBody DynamicModel dm){
+    		method = RequestMethod.POST
+    		)
+    public @ResponseBody String send(@RequestBody final DynamicModel dm){
     	System.out.println("priem");
-    	return "index";    	
+    	return "hello";    	
     }
 
 }

@@ -1099,10 +1099,7 @@ function submit(){
 		dynamicModel.links.push(link);	
 	}
 	
-	//alert(JSON.stringify(dynamicModel));
-	//alert(dynamicModel.states);
-	//alert(dynamicModel.links);
-	
+	//alert(JSON.stringify(dynamicModel,"",2));
 	
 	$.ajax({
 		type: 'POST',
@@ -1111,7 +1108,7 @@ function submit(){
 		contentType: 'application/json',
 		dataType: "text", 
 		success: function(data) {
-			if(data.status == 'OK')
+			if(data == 'hello')
 				alert('yay');
 			else
 				alert('well, BUT...');

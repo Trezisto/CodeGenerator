@@ -3,15 +3,10 @@ package com.prijilevschi.model;
 import java.util.List;
 
 public class DynamicModel {
+	
 	String language;
 	List<Node> states;
 	List<Link> links;
-	
-	public DynamicModel(String language, List<Node> states, List<Link> links) {
-		this.language = language;
-		this.states = states;
-		this.links = links;
-	}
 
 	public String getLanguage() {
 		return language;

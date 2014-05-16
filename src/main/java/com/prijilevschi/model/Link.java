@@ -6,23 +6,24 @@ package com.prijilevschi.model;
  *
  */
 public class Link {
-	private String name;
-	private Node from;
-	private Node to;
 	
-	public Node getFrom() {
+	private String name;
+	private String from;
+	private String to;
+	
+	public String getFrom() {
 		return from;
 	}
 
-	public void setFrom(Node from) {
+	public void setFrom(String from) {
 		this.from = from;
 	}
 
-	public Node getTo() {
+	public String getTo() {
 		return to;
 	}
 
-	public void setTo(Node to) {
+	public void setTo(String to) {
 		this.to = to;
 	}
 
