@@ -1076,7 +1076,9 @@ function submit(){
 	for(i = 0; i < nodes.length; i++){
 		var state = {
 				name : nodes[i].text,
-				finish : nodes[i].isAcceptState
+				finish : nodes[i].isAcceptState,
+				x : nodes[i].x,
+				y : nodes[i].y
 		};
 		dynamicModel.states.push(state);
 	}

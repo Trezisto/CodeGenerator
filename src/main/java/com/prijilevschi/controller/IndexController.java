@@ -3,9 +3,12 @@ package com.prijilevschi.controller;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -17,8 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.prijilevschi.dto.LinkDTO;
+import com.prijilevschi.dto.NodeDTO;
 import com.prijilevschi.model.DynamicModel;
 import com.prijilevschi.model.UploadedFile;
+import com.prijilevschi.service.DynamicModelService;
 
 /**
  * Main Page
@@ -29,6 +35,9 @@ import com.prijilevschi.model.UploadedFile;
 @Controller
 @RequestMapping("/index")
 public class IndexController {
+	
+	@Autowired
+	DynamicModelService dynamicModelService;
 	
 	private static final Logger logger = Logger.getLogger(IndexController.class);
 			
@@ -91,6 +100,8 @@ public class IndexController {
     		method = RequestMethod.POST
     		)
     public @ResponseBody String send(@RequestBody final DynamicModel dm){
+    	Set<NodeDTO> states = dynamicModelService.getNodes(dm.getStates());
+    	Set<LinkDTO> links = dynamicModelService.getLinks(dm.getLinks());
     	System.out.println("priem");
     	return "hello";    	
     }
