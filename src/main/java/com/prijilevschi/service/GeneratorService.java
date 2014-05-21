@@ -1,12 +1,12 @@
 package com.prijilevschi.service;
 
-import com.prijilevschi.model.Link;
-import com.prijilevschi.model.Node;
+import com.prijilevschi.dto.LinkDTO;
+import com.prijilevschi.dto.NodeDTO;
 import com.prijilevschi.repository.Language;
 
-import java.util.List;
+import java.util.Set;
 
 public interface GeneratorService {
 	void init(Language language);
-	void generateCode(List<Node> nodes, List<Link> links);
+	void generateCode(Set<NodeDTO> nodes, Set<LinkDTO> links);
 }

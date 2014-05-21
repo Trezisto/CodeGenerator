@@ -3,29 +3,23 @@ package com.prijilevschi.repository.impl;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.springframework.stereotype.Repository;
-
-import com.prijilevschi.model.Link;
-import com.prijilevschi.model.Node;
+import com.prijilevschi.dto.LinkDTO;
+import com.prijilevschi.dto.NodeDTO;
 import com.prijilevschi.repository.Language;
 
-@Repository
 public class Java implements Language {
 
 	public String getFileFormat() {
 		return ".java";
 	}
 
-	public void generateState(List<Link> lists) throws FileNotFoundException, UnsupportedEncodingException {
+	public void generateState(Set<LinkDTO> links) throws FileNotFoundException, UnsupportedEncodingException {
 		PrintWriter writer = new PrintWriter("State" + getFileFormat(), "UTF-8");
 		
 		writer.println("public interface State {");
-		Set<Link> linkSet = new HashSet<Link>(lists);
-		for(Link link : linkSet){
+		for(LinkDTO link : links){
 			writer.println("\tpublic void " + link.getName() + " ();");
 		}
 		writer.println("}");
@@ -33,12 +27,12 @@ public class Java implements Language {
 		writer.close();
 	}
 	
-	public void generateConcreteState(Node node, List<Link> links) throws FileNotFoundException, UnsupportedEncodingException {
+	public void generateConcreteState(NodeDTO node, Set<LinkDTO> links) throws FileNotFoundException, UnsupportedEncodingException {
 		PrintWriter writer = new PrintWriter(node.getName() + getFileFormat(), "UTF-8");
 		
 		
 		writer.println("public class " + node.getName() + " {");
-		for(Link link : links){
+		for(LinkDTO link : links){
 			writer.println("\tpublic void " + link.getName() + "(){");
 			if(link.getFrom().equals(node)){
 				writer.println("\t\t");
@@ -51,14 +45,14 @@ public class Java implements Language {
 	}
 
 	@Override
-	public void generateStateContext(Set<Node> nodes, Set<Link> links)
+	public void generateStateContext(Set<NodeDTO> nodes, Set<LinkDTO> links)
 			throws FileNotFoundException, UnsupportedEncodingException {
 		PrintWriter writer = new PrintWriter("StateContext" + getFileFormat(), "UTF-8");
 		writer.println("public class StateContext{");
 		
 		writer.println("");
 		
-		for(Node node : nodes)
+		for(NodeDTO node : nodes)
 			writer.println("\tState " + node.getName());
 		
 		writer.println("");
