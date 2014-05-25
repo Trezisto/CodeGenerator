@@ -2,7 +2,7 @@ package com.prijilevschi.model;
 
 /**
  * Transition between states of FSM
- * @author eprijilevschi
+ * @author Evgheni Prijilevschi
  *
  */
 public class Link {

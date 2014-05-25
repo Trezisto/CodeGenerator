@@ -2,7 +2,7 @@ package com.prijilevschi.model;
 
 /**
  * State of FSM
- * @author eprijilevschi
+ * @author Evgheni Prijilevschi
  *
  */
 public class Node {

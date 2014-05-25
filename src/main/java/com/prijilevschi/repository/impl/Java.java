@@ -5,21 +5,28 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.prijilevschi.dto.LinkDTO;
 import com.prijilevschi.dto.NodeDTO;
 import com.prijilevschi.repository.Language;
+import com.prijilevschi.service.DynamicModelService;
+import com.prijilevschi.util.Keywords;
 
 public class Java implements Language {
+	
+	@Autowired
+	DynamicModelService dynamicModelService;
 
 	public String getFileFormat() {
 		return ".java";
 	}
 
-	public void generateState(Set<LinkDTO> links) throws FileNotFoundException, UnsupportedEncodingException {
+	public void generateState(Set<LinkDTO> transitions) throws FileNotFoundException, UnsupportedEncodingException {
 		PrintWriter writer = new PrintWriter("State" + getFileFormat(), "UTF-8");
 		
 		writer.println("public interface State {");
-		for(LinkDTO link : links){
+		for(LinkDTO link : transitions){
 			writer.println("\tpublic void " + link.getName() + " ();");
 		}
 		writer.println("}");
@@ -27,14 +34,14 @@ public class Java implements Language {
 		writer.close();
 	}
 	
-	public void generateConcreteState(NodeDTO node, Set<LinkDTO> links) throws FileNotFoundException, UnsupportedEncodingException {
-		PrintWriter writer = new PrintWriter(node.getName() + getFileFormat(), "UTF-8");
+	public void generateConcreteState(NodeDTO state, Set<LinkDTO> transitions) throws FileNotFoundException, UnsupportedEncodingException {
+		PrintWriter writer = new PrintWriter(state.getName() + getFileFormat(), "UTF-8");
 		
-		
-		writer.println("public class " + node.getName() + " {");
-		for(LinkDTO link : links){
+		String capitalizedName = state.getName().substring(0, 1) + state.getName().substring(1);
+		writer.println("public class " + capitalizedName + " {");
+		for(LinkDTO link : transitions){
 			writer.println("\tpublic void " + link.getName() + "(){");
-			if(link.getFrom().equals(node)){
+			if(link.getFrom().equals(state)){
 				writer.println("\t\t");
 			}
 		}
@@ -45,15 +52,15 @@ public class Java implements Language {
 	}
 
 	@Override
-	public void generateStateContext(Set<NodeDTO> nodes, Set<LinkDTO> links)
+	public void generateStateContext(Set<NodeDTO> states, Set<LinkDTO> transitions)
 			throws FileNotFoundException, UnsupportedEncodingException {
 		PrintWriter writer = new PrintWriter("StateContext" + getFileFormat(), "UTF-8");
 		writer.println("public class StateContext{");
 		
 		writer.println("");
 		
-		for(NodeDTO node : nodes)
-			writer.println("\tState " + node.getName());
+		for(NodeDTO state : states)
+			writer.println("\tState " + state.getName());
 		
 		writer.println("");
 		
@@ -61,10 +68,21 @@ public class Java implements Language {
 		
 		writer.println("\tpublic StateContext(){");
 		//TODO:
+		for(NodeDTO state : states){
+			writer.println("\t\t" + state.getName() + " = new " + state.getName());
+		}
 		writer.println("\t}");
 		
 		writer.println("}");
 		writer.close();
+	}
+
+	@Override
+	public boolean isValidName(String name) {
+		for(String keyword : Keywords.JAVA_LANGUAGE){
+			//if name.trim().toLowerCase()
+		}
+		return false;
 	}
 
 }

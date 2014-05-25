@@ -15,24 +15,30 @@ public class JavaScript implements Language {
 	}
 
 	@Override
-	public void generateState(Set<LinkDTO> links) throws FileNotFoundException,
+	public void generateState(Set<LinkDTO> transitions) throws FileNotFoundException,
 			UnsupportedEncodingException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void generateConcreteState(NodeDTO node, Set<LinkDTO> links)
+	public void generateConcreteState(NodeDTO state, Set<LinkDTO> transitions)
 			throws FileNotFoundException, UnsupportedEncodingException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void generateStateContext(Set<NodeDTO> nodes, Set<LinkDTO> links)
+	public void generateStateContext(Set<NodeDTO> states, Set<LinkDTO> transitions)
 			throws FileNotFoundException, UnsupportedEncodingException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean isValidName(String name) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	

@@ -3,8 +3,17 @@ package com.prijilevschi.dto;
 import com.prijilevschi.model.Node;
 
 public class LinkDTO {
+	/**
+	 *  Non-capitalized validated transition name;
+	 */
 	private String name;
+	/**
+	 *  State where transition begins;
+	 */
 	private Node from;
+	/**
+	 *  State where transition ends;
+	 */
 	private Node to;
 	
 	public String getName() {

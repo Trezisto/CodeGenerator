@@ -15,16 +15,14 @@ import com.prijilevschi.service.GeneratorService;
 public class GeneratorServiceImpl implements GeneratorService{
 	private Language language;
 	
-	public void init(Language language){
-		this.language = language;
-	}
-	
-	public void generateCode(Set<NodeDTO> nodes, Set<LinkDTO> links) {
+	@Override
+	public void generateCode(Set<NodeDTO> states, Set<LinkDTO> transitions) {
 		try {
-			language.generateState(links);
-			for(NodeDTO node : nodes){
-				language.generateConcreteState(node, links);
+			language.generateState(transitions);
+			for(NodeDTO state : states){
+				language.generateConcreteState(state, transitions);
 			}
+			language.generateStateContext(states, transitions);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -32,5 +30,13 @@ public class GeneratorServiceImpl implements GeneratorService{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public Language getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(Language language) {
+		this.language = language;
 	}
 }

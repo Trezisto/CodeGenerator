@@ -1,7 +1,13 @@
 package com.prijilevschi.dto;
 
 public class NodeDTO {
+	/**
+	 * Capitalized validated state name;
+	 */
 	private String name;
+	/**
+	 * Is State finite or not;
+	 */
 	private boolean finish;
 	
 	public String getName() {

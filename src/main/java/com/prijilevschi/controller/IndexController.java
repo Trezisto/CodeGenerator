@@ -24,12 +24,14 @@ import com.prijilevschi.dto.LinkDTO;
 import com.prijilevschi.dto.NodeDTO;
 import com.prijilevschi.model.DynamicModel;
 import com.prijilevschi.model.UploadedFile;
+import com.prijilevschi.repository.Language;
 import com.prijilevschi.service.DynamicModelService;
+import com.prijilevschi.service.GeneratorService;
 
 /**
  * Main Page
  * 
- * @author eprijilevschi
+ * @author Evgheni Prijilevschi
  */
 
 @Controller
@@ -38,6 +40,9 @@ public class IndexController {
 	
 	@Autowired
 	DynamicModelService dynamicModelService;
+	
+	@Autowired
+	GeneratorService generatorService;
 	
 	private static final Logger logger = Logger.getLogger(IndexController.class);
 			
@@ -100,8 +105,13 @@ public class IndexController {
     		method = RequestMethod.POST
     		)
     public @ResponseBody String send(@RequestBody final DynamicModel dm){
+    	dynamicModelService.setLanguage(dm.getLanguage()); //convert String
+    	Language language = dynamicModelService.getLanguage(); //to Language class
     	Set<NodeDTO> states = dynamicModelService.getNodes(dm.getStates());
     	Set<LinkDTO> links = dynamicModelService.getLinks(dm.getLinks());
+    	
+    	generatorService.setLanguage(language);
+    	generatorService.generateCode(states, links);
     	System.out.println("priem");
     	return "hello";    	
     }

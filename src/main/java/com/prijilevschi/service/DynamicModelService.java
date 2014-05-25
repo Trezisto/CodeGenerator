@@ -7,7 +7,13 @@ import com.prijilevschi.dto.LinkDTO;
 import com.prijilevschi.dto.NodeDTO;
 import com.prijilevschi.model.Link;
 import com.prijilevschi.model.Node;
+import com.prijilevschi.repository.Language;
 
+/**
+ * Service intended for passing and validating received information to the business model
+ * @author Evgheni Prijilevschi
+ *
+ */
 public interface DynamicModelService {
 	/**
 	 * Extract states of dynamic model with checking possible dublicates
@@ -19,4 +25,31 @@ public interface DynamicModelService {
 	 * @param links Transitions from state diagram
 	 */
 	Set<LinkDTO> getLinks(List<Link> links);
+	
+	/**
+	 * Get name with capitalized first letter, usually used for class name 
+	 * @param name State name from dynamic model
+	 * @return String suitable for class name
+	 */
+	String getCapitalizedName(String name);
+	/**
+	 * Get name with lower-cased first letter, usually used for methods and variable names 
+	 * @param name Transition's or state's name from dynamic model
+	 * @return String suitable for methods and variable names
+	 */
+	String getLowerCasedName(String name);
+	
+	/**
+	 * Set appropriate programming language for code generation.
+	 * Note that controller is connected with repository via dependency injection 
+	 * @param language Programming language 
+	 * @return 
+	 */
+	void setLanguage(String language);
+	
+	/**
+	 * Get current programming language
+	 * @return Polymorphic interface for generation purposes
+	 */
+	Language getLanguage();
 }
