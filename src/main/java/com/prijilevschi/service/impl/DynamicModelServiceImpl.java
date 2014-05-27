@@ -1,7 +1,9 @@
 package com.prijilevschi.service.impl;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.BeanFactory;
@@ -14,34 +16,41 @@ import com.prijilevschi.model.Link;
 import com.prijilevschi.model.Node;
 import com.prijilevschi.repository.Language;
 import com.prijilevschi.service.DynamicModelService;
+import com.prijilevschi.util.Validator;
 
 @Service
 public class DynamicModelServiceImpl implements DynamicModelService {
 	@Autowired
-	BeanFactory beanFactory;
+	private BeanFactory beanFactory;
 	
-	Language language;
+	private Language language;
+	
+	private Validator validator = new Validator();
 	
 	@Override
 	public Set<NodeDTO> getNodes(List<Node> nodes) {
 		Set<NodeDTO> states = new HashSet<NodeDTO>();
-		NodeDTO state;		
+		NodeDTO state;
+		String name;
 
 		//Remove possible dublicates
 		Set<Node> uniqueNodes = new HashSet<Node>(nodes);
-			
+		Map<String, Node> nodesMap = new HashMap<String, Node>();
+		//if name have been added then change new state name
 		
-		for(Node node : nodes){
+		for(Node node : uniqueNodes){
 			
 			//if(all right)
 			state = new NodeDTO();
 			
-			if(language.isValidName(node.getName())){
-				
-			}
+			
+			name = validator.validateRules(node.getName());
+			
 			state.setName(getCapitalizedName(node.getName()));
 			state.setFinish(node.isFinish());
 			states.add(state);
+				
+			
 			if(!states.contains(node)){
 				//states.add(nodes.get(0));
 			}
@@ -86,6 +95,7 @@ public class DynamicModelServiceImpl implements DynamicModelService {
 	@Override
 	public void setLanguage(String language) {
 		this.language = (Language) beanFactory.getBean(language);
+		validator.setLanguage(this.language);
 	}
 	
 	@Override

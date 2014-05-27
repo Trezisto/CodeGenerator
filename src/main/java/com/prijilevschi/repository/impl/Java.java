@@ -12,6 +12,7 @@ import com.prijilevschi.dto.NodeDTO;
 import com.prijilevschi.repository.Language;
 import com.prijilevschi.service.DynamicModelService;
 import com.prijilevschi.util.Keywords;
+import com.prijilevschi.util.Validator;
 
 public class Java implements Language {
 	
@@ -76,13 +77,10 @@ public class Java implements Language {
 		writer.println("}");
 		writer.close();
 	}
-
+	
 	@Override
-	public boolean isValidName(String name) {
-		for(String keyword : Keywords.JAVA_LANGUAGE){
-			//if name.trim().toLowerCase()
-		}
-		return false;
+	public String validateLanguageRules(String name){
+		return name;		
 	}
 
 }

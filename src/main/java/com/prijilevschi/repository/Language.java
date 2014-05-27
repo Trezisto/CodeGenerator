@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.prijilevschi.dto.LinkDTO;
 import com.prijilevschi.dto.NodeDTO;
+import com.prijilevschi.util.Validator;
 
 public interface Language {
 	public String getFileFormat();
@@ -15,15 +16,13 @@ public interface Language {
 	public void generateStateContext(Set<NodeDTO> states, Set<LinkDTO> transitions) throws FileNotFoundException, UnsupportedEncodingException;
 	
 	/**
-	 * Check the following statements:
-	 * - State or transition name is not empty.
-	 * - Name is not equal to the special language keyword.
-	 * - Name doesn't begin with number and it doesn't contain there special characters.
-	 * (i.e. it doesn't violate any programming language rule)
-	 *  //There are not two states with the same name. (NOT HERE)
+	 * Check the following statements:<br/>
+	 * - Name is not equal to the special language keyword.<br/>
+	 * - Name doesn't begin with number and it doesn't contain there special characters.<br/>
+	 * (i.e. it doesn't violate any programming language rule)<br/>
 	 * 
-	 * @param name State or transition name which has been already trimmed and lower-cased
-	 * @return 
+	 * @param name State or transition name which has been already checked
+	 * @return Modified String
 	 */
-	public boolean isValidName(String name); 
+	public String validateLanguageRules(String name);
 }

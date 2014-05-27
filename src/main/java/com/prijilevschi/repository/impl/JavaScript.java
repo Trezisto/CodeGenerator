@@ -36,11 +36,9 @@ public class JavaScript implements Language {
 	}
 
 	@Override
-	public boolean isValidName(String name) {
+	public String validateLanguageRules(String name) {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
-
-	
 
 }
