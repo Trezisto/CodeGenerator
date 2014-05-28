@@ -40,6 +40,13 @@ public interface DynamicModelService {
 	String getLowerCasedName(String name);
 	
 	/**
+	 * Find a state object from dynamic model by it's name
+	 * @param name State name
+	 * @return State data transfer object
+	 */
+	NodeDTO findStateByName(String name);
+	
+	/**
 	 * Set appropriate programming language for code generation.
 	 * Note that controller is connected with repository via dependency injection 
 	 * @param language Programming language 

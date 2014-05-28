@@ -35,10 +35,12 @@ public class Validator {
 		String temp = name.trim();
 		if(name.length() > MAX_SIZE){
 			logger.error("Length of String is too big!");
-			return null;
-		}
+			return "Qi";
+		}		
 		//TODO: is one word
 		//TODO: regexp validation - no html, js, code inside
+		
+		temp = language.validateLanguageRules(name);
 		return temp;
 	}
 

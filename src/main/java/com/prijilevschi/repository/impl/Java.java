@@ -65,16 +65,32 @@ public class Java implements Language {
 		
 		writer.println("");
 		
-		writer.println("\tState state;");
+		writer.println("\tState state;"); 
 		
+		writer.println("");
+		
+		//default constructor
 		writer.println("\tpublic StateContext(){");
-		//TODO:
 		for(NodeDTO state : states){
-			writer.println("\t\t" + state.getName() + " = new " + state.getName());
+			writer.println("\t\t" + dynamicModelService.getLowerCasedName(state.getName()) + " = new " + state.getName() + "();");
 		}
 		writer.println("\t}");
 		
-		writer.println("}");
+		//getters for states
+		writer.println("\tpublic State getState(){");
+		writer.println("\t\treturn state;");
+		writer.println("\t}");
+		
+		//methods as reactions between states
+		for(LinkDTO transition : transitions){
+			writer.println("\tpublic void " + transition.getName() + "(){");
+			writer.println("\t\tstate." + transition.getName() + "();");
+			writer.println("\t}\n");
+		}
+		
+		writer.println("");
+		
+		writer.println("}"); //close class
 		writer.close();
 	}
 	

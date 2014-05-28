@@ -27,42 +27,63 @@ public class DynamicModelServiceImpl implements DynamicModelService {
 	
 	private Validator validator = new Validator();
 	
+	Set<NodeDTO> states = new HashSet<NodeDTO>();
+	Set<LinkDTO> transitions = new HashSet<LinkDTO>();
+	
 	@Override
 	public Set<NodeDTO> getNodes(List<Node> nodes) {
-		Set<NodeDTO> states = new HashSet<NodeDTO>();
 		NodeDTO state;
 		String name;
 
 		//Remove possible dublicates
 		Set<Node> uniqueNodes = new HashSet<Node>(nodes);
 		Map<String, Node> nodesMap = new HashMap<String, Node>();
-		//if name have been added then change new state name
+		//if node with the same name have been added then change new state name
 		
 		for(Node node : uniqueNodes){
 			
 			//if(all right)
-			state = new NodeDTO();
 			
-			
-			name = validator.validateRules(node.getName());
-			
-			state.setName(getCapitalizedName(node.getName()));
-			state.setFinish(node.isFinish());
-			states.add(state);
 				
 			
-			if(!states.contains(node)){
-				//states.add(nodes.get(0));
+			if(!uniqueNodes.contains(node)){
+				state = new NodeDTO();
+				name = validator.validateRules(node.getName());
+				
+				state.setName(getCapitalizedName(name));
+				state.setFinish(node.isFinish());
+				states.add(state);
 			}
 		}
-		return null;
+		return states;
 	}
 	
 
 	@Override
 	public Set<LinkDTO> getLinks(List<Link> links) {
-		// TODO Auto-generated method stub
-		return null;
+		LinkDTO transition;
+		String name;
+
+		//Remove possible dublicates
+		Set<Link> uniqueLinks = new HashSet<Link>(links);
+		Map<String, Link> linksMap = new HashMap<String, Link>();
+		//if link with the same name have been added then change new state name
+		
+		for(Link link : uniqueLinks){
+			
+			//if(all right)
+			if(!uniqueLinks.contains(link)){
+				transition = new LinkDTO();
+				name = validator.validateRules(link.getName());
+				
+				transition.setName(getLowerCasedName(name));
+				transition.setFrom(findStateByName(link.getFrom()));
+				transition.setTo(findStateByName(link.getTo()));
+				
+				transitions.add(transition);
+			}
+		}
+		return transitions;
 	}
 	
 	@Override
@@ -92,6 +113,14 @@ public class DynamicModelServiceImpl implements DynamicModelService {
 	}
 
 
+	@Override
+	public NodeDTO findStateByName(String name) {
+		for(NodeDTO state : states)
+			if(state.getName().equals(name))
+				return state;
+		return null;
+	}
+	
 	@Override
 	public void setLanguage(String language) {
 		this.language = (Language) beanFactory.getBean(language);

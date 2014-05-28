@@ -1,7 +1,5 @@
 package com.prijilevschi.dto;
 
-import com.prijilevschi.model.Node;
-
 public class LinkDTO {
 	/**
 	 *  Non-capitalized validated transition name;
@@ -10,11 +8,11 @@ public class LinkDTO {
 	/**
 	 *  State where transition begins;
 	 */
-	private Node from;
+	private NodeDTO from;
 	/**
 	 *  State where transition ends;
 	 */
-	private Node to;
+	private NodeDTO to;
 	
 	public String getName() {
 		return name;
@@ -22,16 +20,16 @@ public class LinkDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Node getFrom() {
+	public NodeDTO getFrom() {
 		return from;
 	}
-	public void setFrom(Node from) {
+	public void setFrom(NodeDTO from) {
 		this.from = from;
 	}
-	public Node getTo() {
+	public NodeDTO getTo() {
 		return to;
 	}
-	public void setTo(Node to) {
+	public void setTo(NodeDTO to) {
 		this.to = to;
 	}
 }
