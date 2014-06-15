@@ -1,0 +1,17 @@
+public class $state implements State{
+	Context context;
+	
+	public $state(Context context){
+		this.context = context;	
+	}
+	
+#foreach($t in $transitions)
+	@Override
+	public void $t(){
+#if($)
+			context.setState(context.get$state2());
+#end
+	}
+	
+#end
+}

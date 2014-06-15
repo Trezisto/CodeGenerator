@@ -1,0 +1,5 @@
+public interface State{
+#foreach($t in $transitions)
+	void $t();
+#end
+}

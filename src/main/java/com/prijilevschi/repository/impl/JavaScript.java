@@ -4,10 +4,15 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Repository;
+
 import com.prijilevschi.dto.LinkDTO;
 import com.prijilevschi.dto.NodeDTO;
 import com.prijilevschi.repository.Language;
 
+@Repository
 public class JavaScript implements Language {
 
 	public String getFileFormat() {
@@ -36,7 +41,7 @@ public class JavaScript implements Language {
 	}
 
 	@Override
-	public String validateLanguageRules(String name) {
+	public String filterLanguageRules(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -3,18 +3,26 @@ package com.prijilevschi.repository.impl;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.prijilevschi.dto.LinkDTO;
 import com.prijilevschi.dto.NodeDTO;
 import com.prijilevschi.repository.Language;
 import com.prijilevschi.service.DynamicModelService;
-import com.prijilevschi.util.Keywords;
-import com.prijilevschi.util.Validator;
 
+@Repository("Java")
 public class Java implements Language {
+	
+	VelocityEngine engine;
 	
 	@Autowired
 	DynamicModelService dynamicModelService;
@@ -22,80 +30,68 @@ public class Java implements Language {
 	public String getFileFormat() {
 		return ".java";
 	}
-
+	
+	public Java(){
+		engine = new VelocityEngine();
+		engine.init();
+	}
+	
 	public void generateState(Set<LinkDTO> transitions) throws FileNotFoundException, UnsupportedEncodingException {
-		PrintWriter writer = new PrintWriter("State" + getFileFormat(), "UTF-8");
+		List<String> names = new ArrayList<String>();
 		
-		writer.println("public interface State {");
-		for(LinkDTO link : transitions){
-			writer.println("\tpublic void " + link.getName() + " ();");
-		}
-		writer.println("}");
+		for(LinkDTO transition : transitions)
+			names.add(transition.getName());
+		
+		Template template = Velocity.getTemplate("./src/main/resources/templates/state/java.vm");
+		VelocityContext context = new VelocityContext();
+		context.put("transitions", names);
+		
+		PrintWriter writer = new PrintWriter("files/State" + getFileFormat(), "UTF-8");
+		template.merge(context, writer);
 		
 		writer.close();
 	}
 	
 	public void generateConcreteState(NodeDTO state, Set<LinkDTO> transitions) throws FileNotFoundException, UnsupportedEncodingException {
-		PrintWriter writer = new PrintWriter(state.getName() + getFileFormat(), "UTF-8");
+		List<String> names = new ArrayList<String>();
 		
-		String capitalizedName = state.getName().substring(0, 1) + state.getName().substring(1);
-		writer.println("public class " + capitalizedName + " {");
-		for(LinkDTO link : transitions){
-			writer.println("\tpublic void " + link.getName() + "(){");
-			if(link.getFrom().equals(state)){
-				writer.println("\t\t");
-			}
-		}
-		writer.println("");
+		for(LinkDTO transition : transitions)
+			names.add(transition.getName());
 		
-		writer.println("}");
+		Template template = Velocity.getTemplate("./src/main/resources/templates/concrete_state/java.vm");
+		VelocityContext context = new VelocityContext();
+		context.put("transitions", names);
+		
+		PrintWriter writer = new PrintWriter("files/" + state.getName() + getFileFormat(), "UTF-8");
+		template.merge(context, writer);
+		
 		writer.close();
 	}
 
 	@Override
 	public void generateStateContext(Set<NodeDTO> states, Set<LinkDTO> transitions)
 			throws FileNotFoundException, UnsupportedEncodingException {
-		PrintWriter writer = new PrintWriter("StateContext" + getFileFormat(), "UTF-8");
-		writer.println("public class StateContext{");
+		List<String> transitionNames = new ArrayList<String>();
+		List<String> stateNames = new ArrayList<String>();
 		
-		writer.println("");
-		
+		for(LinkDTO transition : transitions)
+			transitionNames.add(transition.getName());
 		for(NodeDTO state : states)
-			writer.println("\tState " + state.getName());
+			stateNames.add(state.getName().substring(0, 1).toLowerCase() + state.getName().substring(1));
 		
-		writer.println("");
+		Template template = Velocity.getTemplate("./src/main/resources/templates/concrete_state/java.vm");
+		VelocityContext context = new VelocityContext();
+		context.put("transitions", transitionNames);
+		context.put("states", stateNames);
 		
-		writer.println("\tState state;"); 
+		PrintWriter writer = new PrintWriter("StateContext" + getFileFormat(), "UTF-8");
+		template.merge(context, writer);
 		
-		writer.println("");
-		
-		//default constructor
-		writer.println("\tpublic StateContext(){");
-		for(NodeDTO state : states){
-			writer.println("\t\t" + dynamicModelService.getLowerCasedName(state.getName()) + " = new " + state.getName() + "();");
-		}
-		writer.println("\t}");
-		
-		//getters for states
-		writer.println("\tpublic State getState(){");
-		writer.println("\t\treturn state;");
-		writer.println("\t}");
-		
-		//methods as reactions between states
-		for(LinkDTO transition : transitions){
-			writer.println("\tpublic void " + transition.getName() + "(){");
-			writer.println("\t\tstate." + transition.getName() + "();");
-			writer.println("\t}\n");
-		}
-		
-		writer.println("");
-		
-		writer.println("}"); //close class
 		writer.close();
 	}
 	
 	@Override
-	public String validateLanguageRules(String name){
+	public String filterLanguageRules(String name){
 		return name;		
 	}
 

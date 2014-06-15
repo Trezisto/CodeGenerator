@@ -4,7 +4,7 @@
   <groupId>com.prijilevschi</groupId>
   <artifactId>CodeGenerator</artifactId>
   <packaging>war</packaging>
-  <version>0.0.7-SNAPSHOT</version>
+  <version>0.0.8-SNAPSHOT</version>
   <name>CodeGenerator Web Application</name>
   <url>http://maven.apache.org</url>
   
@@ -81,7 +81,14 @@
 		<artifactId>jackson-mapper-asl</artifactId>
 		<version>1.9.12</version>
 	</dependency>
-            
+    
+    <!-- Apache Velocity is a general purpose template engine. -->
+	<dependency>
+		<groupId>org.apache.velocity</groupId>
+		<artifactId>velocity</artifactId>
+		<version>1.7</version>
+	</dependency>
+	        
 	            
             
             

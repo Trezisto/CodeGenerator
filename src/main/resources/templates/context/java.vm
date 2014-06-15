@@ -1,0 +1,24 @@
+public class Context{
+#foreach($s in $states)
+	State $s;
+#end
+	
+	State state;
+	
+#foreach($t in $transitions)
+	public void $t(){
+		state.$t();
+	}
+	
+#end
+	public void setState(State state){
+		this.state = state;
+	}
+
+#foreach($s in $states)	
+	public State get#s(){
+		return #s;
+	}
+	
+#end
+}

@@ -16,7 +16,7 @@ import com.prijilevschi.model.Link;
 import com.prijilevschi.model.Node;
 import com.prijilevschi.repository.Language;
 import com.prijilevschi.service.DynamicModelService;
-import com.prijilevschi.util.Validator;
+import com.prijilevschi.util.Filter;
 
 @Service
 public class DynamicModelServiceImpl implements DynamicModelService {
@@ -25,10 +25,10 @@ public class DynamicModelServiceImpl implements DynamicModelService {
 	
 	private Language language;
 	
-	private Validator validator = new Validator();
+	private Filter filter = new Filter();
 	
-	Set<NodeDTO> states = new HashSet<NodeDTO>();
-	Set<LinkDTO> transitions = new HashSet<LinkDTO>();
+	Set<NodeDTO> states;
+	Set<LinkDTO> transitions; 
 	
 	@Override
 	public Set<NodeDTO> getNodes(List<Node> nodes) {
@@ -37,23 +37,17 @@ public class DynamicModelServiceImpl implements DynamicModelService {
 
 		//Remove possible dublicates
 		Set<Node> uniqueNodes = new HashSet<Node>(nodes);
-		Map<String, Node> nodesMap = new HashMap<String, Node>();
+		states = new HashSet<NodeDTO>();
+		//Map<String, Node> nodesMap = new HashMap<String, Node>();
 		//if node with the same name have been added then change new state name
 		
 		for(Node node : uniqueNodes){
-			
-			//if(all right)
-			
-				
-			
-			if(!uniqueNodes.contains(node)){
 				state = new NodeDTO();
-				name = validator.validateRules(node.getName());
+				name = filter.filterRules(node.getName());
 				
 				state.setName(getCapitalizedName(name));
 				state.setFinish(node.isFinish());
 				states.add(state);
-			}
 		}
 		return states;
 	}
@@ -66,22 +60,19 @@ public class DynamicModelServiceImpl implements DynamicModelService {
 
 		//Remove possible dublicates
 		Set<Link> uniqueLinks = new HashSet<Link>(links);
-		Map<String, Link> linksMap = new HashMap<String, Link>();
+		transitions = new HashSet<LinkDTO>();
+		//Map<String, Link> linksMap = new HashMap<String, Link>();
 		//if link with the same name have been added then change new state name
 		
 		for(Link link : uniqueLinks){
-			
-			//if(all right)
-			if(!uniqueLinks.contains(link)){
-				transition = new LinkDTO();
-				name = validator.validateRules(link.getName());
-				
-				transition.setName(getLowerCasedName(name));
-				transition.setFrom(findStateByName(link.getFrom()));
-				transition.setTo(findStateByName(link.getTo()));
-				
-				transitions.add(transition);
-			}
+			transition = new LinkDTO();
+			name = filter.filterRules(link.getName());
+
+			transition.setName(getLowerCasedName(name));
+			transition.setFrom(findStateByName(link.getFrom()));
+			transition.setTo(findStateByName(link.getTo()));
+
+			transitions.add(transition);
 		}
 		return transitions;
 	}
@@ -124,7 +115,7 @@ public class DynamicModelServiceImpl implements DynamicModelService {
 	@Override
 	public void setLanguage(String language) {
 		this.language = (Language) beanFactory.getBean(language);
-		validator.setLanguage(this.language);
+		filter.setLanguage(this.language);
 	}
 	
 	@Override

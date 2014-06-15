@@ -10,10 +10,10 @@ import com.prijilevschi.repository.Language;
  * @author Evgheni Prijilevschi
  *
  */
-public class Validator {	
+public class Filter {	
 	private static final int MAX_SIZE = 1024;
 	
-	private static final Logger logger = Logger.getLogger(Validator.class);
+	private static final Logger logger = Logger.getLogger(Filter.class);
 	
 	/**
 	 * Variable for unnamed states indexing.
@@ -27,11 +27,11 @@ public class Validator {
 	private Language language;
 	
 	/**
-	 * Validate state/transition name and put it in final form.
+	 * Filter state/transition name and put it in final form.
 	 * @param Original String
 	 * @return Modified String or new value if modification is not possible 
 	 */
-	public String validateRules(String name) {
+	public String filterRules(String name) {
 		String temp = name.trim();
 		if(name.length() > MAX_SIZE){
 			logger.error("Length of String is too big!");
@@ -40,7 +40,7 @@ public class Validator {
 		//TODO: is one word
 		//TODO: regexp validation - no html, js, code inside
 		
-		temp = language.validateLanguageRules(name);
+		temp = language.filterLanguageRules(name);
 		return temp;
 	}
 

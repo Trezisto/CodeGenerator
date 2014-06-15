@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.prijilevschi.dto.LinkDTO;
 import com.prijilevschi.dto.NodeDTO;
-import com.prijilevschi.util.Validator;
+import com.prijilevschi.util.Filter;
 
 public interface Language {
 	public String getFileFormat();
@@ -24,5 +24,5 @@ public interface Language {
 	 * @param name State or transition name which has been already checked
 	 * @return Modified String
 	 */
-	public String validateLanguageRules(String name);
+	public String filterLanguageRules(String name);
 }
