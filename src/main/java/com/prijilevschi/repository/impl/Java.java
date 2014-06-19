@@ -84,7 +84,7 @@ public class Java implements Language {
 		context.put("transitions", transitionNames);
 		context.put("states", stateNames);
 		
-		PrintWriter writer = new PrintWriter("StateContext" + getFileFormat(), "UTF-8");
+		PrintWriter writer = new PrintWriter("files/Context" + getFileFormat(), "UTF-8");
 		template.merge(context, writer);
 		
 		writer.close();

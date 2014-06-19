@@ -1108,15 +1108,11 @@ function submit(){
 		url: 'index/send',
 		data: JSON.stringify(dynamicModel),
 		contentType: 'application/json',
-		dataType: "text", 
 		success: function(data) {
-			if(data == 'hello')
-				alert('yay');
-			else
-				alert('well, BUT...');
+				alert('Files are generated!');
 		},
 		error:function(data,status,er) {
-			alert('ditch');
+			alert('error');
 		}		
 	});
 	

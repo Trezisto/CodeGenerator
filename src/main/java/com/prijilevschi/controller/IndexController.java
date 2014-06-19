@@ -1,14 +1,22 @@
 package com.prijilevschi.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -102,9 +110,9 @@ public class IndexController {
    }
     
     @RequestMapping(value = "/send", 
-    		method = RequestMethod.POST
+    		method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     		)
-    public @ResponseBody String send(@RequestBody final DynamicModel dm){
+    public @ResponseBody FileSystemResource send(@RequestBody final DynamicModel dm) {
     	dynamicModelService.setLanguage(dm.getLanguage()); //convert String
     	Language language = dynamicModelService.getLanguage(); //to Language class
     	Set<NodeDTO> states = dynamicModelService.getNodes(dm.getStates());
@@ -112,8 +120,35 @@ public class IndexController {
     	
     	generatorService.setLanguage(language);
     	generatorService.generateCode(states, links);
+    	
     	System.out.println("priem");
-    	return "hello";    	
+    	//create zip archive and send it back
+    	try {
+    		ZipOutputStream out = new ZipOutputStream(new FileOutputStream("code.zip"));
+
+    		File folder = new File("files/");
+    		for(File fileEntry : folder.listFiles()){
+    			if(fileEntry.isFile()){
+    				// name the file inside the zip  file 
+    				out.putNextEntry(new ZipEntry(fileEntry.getName()));
+    				// buffer size
+    				byte[] b = new byte[1024];
+    				int count;
+    				FileInputStream in = new FileInputStream(fileEntry);
+    				while((count = in.read(b)) > 0){
+    					out.write(b, 0, count);
+    				}
+    				in.close();
+    				out.closeEntry();
+    			}
+    		}
+    		out.close();
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	
+    	return new FileSystemResource("code.zip");    	
     }
 
 }
